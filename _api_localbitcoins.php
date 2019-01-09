@@ -21,7 +21,7 @@ class LocalBitcoins {
 
 		// Method
 		$api_get 	= array('/api/ads/','/api/ad-get/{ad_id}/','/api/ad-get/','/api/payment_methods/','/api/payment_methods/{countrycode}/','/api/countrycodes/','/api/currencies/','/api/places/','/api/contact_messages/{contact_id}/','/api/contact_info/{contact_id}/','/api/contact_info/','/api/account_info/{username}','/api/dashboard/','/api/dashboard/released/','/api/dashboard/canceled/','/api/dashboard/closed/','/api/myself/','/api/notifications/','/api/real_name_verifiers/{username}/','/api/recent_messages/','/api/wallet/','/api/wallet-balance/','/api/wallet-addr/','/api/merchant/invoices/','/api/merchant/invoice/{invoice_id}/');
-		$api_post 	= array('/api/ad/{ad_id}/','/api/ad-create/','/api/ad-delete/{ad_id}/','/api/feedback/{username}/','/api/contact_release/{contact_id}/','/api/contact_release_pin/{contact_id}/','/api/contact_mark_as_paid/{contact_id}/','/api/contact_message_post/{contact_id}/','/api/contact_dispute/{contact_id}/','/api/contact_cancel/{contact_id}/','/api/contact_fund/{contact_id}','/api/contact_mark_realname/{contact_id}/','/api/contact_mark_identified/{contact_id}/','/api/contact_create/{ad_id}/','/api/logout/','/api/notifications/mark_as_read/{notification_id}/','/api/pincode/','/api/wallet-send/','/api/wallet-send-pin/','/api/merchant/new_invoice/','/api/merchant/delete_invoice/{invoice_id}/');
+		$api_post 	= array('/api/ad/{ad_id}/','/api/ad-create/','/api/ad-equation/{ad_id}/','/api/ad-delete/{ad_id}/','/api/feedback/{username}/','/api/contact_release/{contact_id}/','/api/contact_release_pin/{contact_id}/','/api/contact_mark_as_paid/{contact_id}/','/api/contact_message_post/{contact_id}/','/api/contact_dispute/{contact_id}/','/api/contact_cancel/{contact_id}/','/api/contact_fund/{contact_id}','/api/contact_mark_realname/{contact_id}/','/api/contact_mark_identified/{contact_id}/','/api/contact_create/{ad_id}/','/api/logout/','/api/notifications/mark_as_read/{notification_id}/','/api/pincode/','/api/wallet-send/','/api/wallet-send-pin/','/api/merchant/new_invoice/','/api/merchant/delete_invoice/{invoice_id}/');
 		$api_public	= array('/buy-bitcoins-with-cash/{location_id}/{location_slug}/.json','/sell-bitcoins-for-cash/{location_id}/{location_slug}/.json','/buy-bitcoins-online/{countrycode:2}/{country_name}/{payment_method}/.json','/buy-bitcoins-online/{countrycode:2}/{country_name}/.json','/buy-bitcoins-online/{currency:3}/{payment_method}/.json','/buy-bitcoins-online/{currency:3}/.json','/buy-bitcoins-online/{payment_method}/.json','/buy-bitcoins-online/.json','/sell-bitcoins-online/{countrycode:2}/{country_name}/{payment_method}/.json','/sell-bitcoins-online/{countrycode:2}/{country_name}/.json','/sell-bitcoins-online/{currency:3}/{payment_method}/.json','/sell-bitcoins-online/{currency:3}/.json','/sell-bitcoins-online/{payment_method}/.json','/sell-bitcoins-online/.json','/bitcoinaverage/ticker-all-currencies/','/bitcoincharts/{currency}/trades.json','/bitcoincharts/{currency}/orderbook.json');
 
 		// Init curl
@@ -81,6 +81,7 @@ class LocalBitcoins {
 
 		// Let's go!
 		curl_setopt($ch, CURLOPT_URL, 'https://localbitcoins.com'.$url);
+		curl_setopt($ch, CURLOPT_TIMEOUT,100); //set timeout to 100 seconds
 		$res = curl_exec($ch);
 
 		// website/api error ?
@@ -89,6 +90,8 @@ class LocalBitcoins {
 
 		// return result
 		return json_decode($res);
+		
+		curl_close($ch); //close connection
 	}
 }
 class LocalBitcoins_Advertisements_API extends LocalBitcoins {
@@ -120,6 +123,11 @@ class LocalBitcoins_Advertisements_API extends LocalBitcoins {
 
 	public function AdCreate($arguments) {
 		return $this->Query('/api/ad-create/',$arguments);
+	}
+	
+	///api/ad-equation/{ad_id}/ - update price
+	public function AdEquation($ad_id,$new_price) {
+		return $this->Query('/api/ad-equation/{ad_id}/',array('price_equation'=>$new_price),'',array('{ad_id}'),array($ad_id));
 	}
 
 	public function AdDelete($ad_id) {
