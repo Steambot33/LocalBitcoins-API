@@ -4,6 +4,8 @@
 * @author: BeBot
 * @donation: 1C649ncNBQ5EdoJ1srg5mMyRe4Tmez5DF6
 *
+* Edited by Steambot33 
+*
 * Licensed under the WTFPL license.
 * See http://www.wtfpl.net/about/
 **/
