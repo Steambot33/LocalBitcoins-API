@@ -20,3 +20,6 @@
 
 ### v0.1a : ( 2017-05-11 )
 * Initial Release.
+
+### v0.1b : ( 2019-01-09 )
+* Added function AdEquation by Steambot33
